@@ -21,6 +21,7 @@ export const getProductsAsync = createAsyncThunk(
 export const addProductAsync = createAsyncThunk(
   'dashboard/addProduct',
   async (data) => {
+    console.log('dashboard/addProduct',  data)
     const response = await _productService.addProduct(data);
     console.log(response)
     // The value we return becomes the `fulfilled` action payload
@@ -31,8 +32,9 @@ export const addProductAsync = createAsyncThunk(
 export const modifyProductAsync = createAsyncThunk(
   'dashboard/modifyProduct',
   async (data) => {
-    const response = await _productService.modifyProduct(data);
-    console.log(response)
+    const { id } = data;
+    console.log(id, data)
+    const response = await _productService.modifyProduct(id, data);
     // The value we return becomes the `fulfilled` action payload
     return response;
   }
@@ -41,8 +43,8 @@ export const modifyProductAsync = createAsyncThunk(
 export const removeProductAsync = createAsyncThunk(
   'dashboard/removeProduct',
   async (data) => {
-    console.log(data)
     const { id } = data;
+    // console.log('dashboard/removeProduct', id)
     const response = await _productService.removeProduct(id);
     console.log(response)
     // The value we return becomes the `fulfilled` action payload

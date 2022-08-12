@@ -2,10 +2,11 @@ const express = require("express");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const app = express(); 
+var fs = require('fs');
 const port = process.env.PORT || 5000;
 
 // return result as json format
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 
 // This displays message that the server running and listening to specified port
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -13,7 +14,8 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 const environment = {
   apiKey: "AIzaSyDwm3byAy_1Q-Cui3vFQp9yGcxLkNagjAI",
   authURL: "https://identitytoolkit.googleapis.com/v1/",
-  databaseURL: "https://test-react-fullstack-default-rtdb.firebaseio.com/"
+  databaseURL: "https://test-react-fullstack-default-rtdb.firebaseio.com/",
+  storageURL: "https://firebasestorage.googleapis.com/v0/b/test-react-fullstack.appspot.com/o/"
 };
 
 // USER
@@ -132,7 +134,6 @@ app.get("/products", async (req, res) => {
 // Add New Product
 app.post("/product", async (req, res) => {
   const { image, title, description } = req.body;
-  // const { authorization } = req.headers;
   const data = {
     image: image,
     title: title,
@@ -167,7 +168,7 @@ app.put("/product/:id", async (req, res) => {
   const apiResponse = await fetch(
     `${environment.databaseURL}products/${id}.json`,
     {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      method: "PUT", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache",
       body: JSON.stringify(data),
@@ -190,5 +191,6 @@ app.delete("/product/:id", async (req, res) => {
     }
   );
   const apiResponseJson = await apiResponse.json();
+  console.log(apiResponse)
   res.send({...apiResponseJson});
 });

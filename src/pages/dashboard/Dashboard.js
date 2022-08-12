@@ -25,9 +25,6 @@ import { ProductService } from "../../services/product/product-service";
 import { removeUserAsync } from "../../app/userSlice";
 import {
   getProductsAsync,
-  addProductAsync,
-  modifyProductAsync,
-  removeProductAsync,
 } from "./dashboardSlice";
 
 // Router
@@ -110,10 +107,12 @@ export function Dashboard() {
       dispatch(getProductsAsync());
     }
     if (productStatus === "modified") {
-      // callbackToggleEditDrawer(anchor, false);
+      callbackToggleEditDrawer(anchor, false);
+      dispatch(getProductsAsync());
     }
     if (productStatus === "removed") {
       handleCloseDeleteProduct();
+      dispatch(getProductsAsync());
     }
   }, [
     dispatch,
@@ -174,7 +173,7 @@ export function Dashboard() {
               <CardComponent
                 data={element}
                 onRemove={handleOpenDeleteProduct(element)}
-                onEdit={toggleEditProductDrawer(product)}
+                onEdit={toggleEditProductDrawer(element)}
               />
             </Grid>
           ))}

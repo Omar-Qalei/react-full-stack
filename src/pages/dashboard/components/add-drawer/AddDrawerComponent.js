@@ -24,12 +24,25 @@ export function AddDrawerComponent(props) {
     description: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProduct((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleChange = async (e) => {
+    let { name, value } = e.target;
+    if (name === "image") {
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (_event) => {
+        value = reader.result;
+        setProduct((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      };
+    } else {
+      setProduct((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const onAddProduct = () => dispatch(addProductAsync(product));
@@ -53,19 +66,18 @@ export function AddDrawerComponent(props) {
             size="small"
             id="outlined-basic"
             // label="Image"
-            defaultValue={product.image}
             onChange={handleChange}
             variant="outlined"
-            type={'file'}
-          >
-          </TextField>
+            name="image"
+            type={"file"}
+          ></TextField>
         </ListItem>
         <ListItem>
           <TextField
             size="small"
             id="outlined-basic"
             label="Title"
-            defaultValue={product.title}
+            name="title"
             onChange={handleChange}
             variant="outlined"
             fullWidth={true}
@@ -76,7 +88,7 @@ export function AddDrawerComponent(props) {
             size="small"
             id="outlined-basic2"
             label="Description"
-            defaultValue={product.description}
+            name="description"
             onChange={handleChange}
             variant="outlined"
             fullWidth={true}
@@ -90,10 +102,7 @@ export function AddDrawerComponent(props) {
           >
             Cancel
           </Button>
-          <Button
-            size="small"
-            onClick={onAddProduct}
-          >
+          <Button size="small" onClick={onAddProduct}>
             Add
           </Button>
         </ListItem>

@@ -17,6 +17,7 @@ export class ProductService {
       return body;
     };
     addProduct = async (data) => {
+      console.log(data);
       const response = await fetch("/product", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
@@ -35,6 +36,7 @@ export class ProductService {
       return body;
     };
     modifyProduct = async (productId, data) => {
+      console.log('modifyProduct', productId)
       const response = await fetch(`/product/${productId}`, {
         method: "PUT", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
@@ -53,6 +55,7 @@ export class ProductService {
       return body;
     };
     removeProduct = async (productId) => {
+      console.log(productId)
       const response = await fetch(`/product/${productId}`, {
         method: "DELETE", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin

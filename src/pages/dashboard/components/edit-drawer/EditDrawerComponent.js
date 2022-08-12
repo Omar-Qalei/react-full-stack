@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // Drawer
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
@@ -18,21 +18,37 @@ import { useSelector, useDispatch } from "react-redux";
 
 export function EditDrawerComponent(props) {
   const dispatch = useDispatch();
-  const [product, setProduct] = useState({
-    image: "",
-    title: "",
-    description: "",
-  });
+  const [product, setProduct] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProduct((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleChange = async (e) => {
+    let { name, value } = e.target;
+    if (name === "image") {
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (_event) => {
+        value = reader.result;
+        setProduct((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      };
+    } else {
+      setProduct((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const onEditProduct = () => dispatch(modifyProductAsync(product));
+
+  useEffect(() => {
+    if(!product) {
+      console.log('Hello')
+      setProduct(props.data)
+    }
+  }, [product, props.data])
 
   return (
     <SwipeableDrawer
@@ -52,10 +68,9 @@ export function EditDrawerComponent(props) {
           <TextField
             size="small"
             id="outlined-basic"
-            // label="Image"
-            defaultValue={props.image}
             onChange={handleChange}
             variant="outlined"
+            name="image"
             type={'file'}
           >
           </TextField>
@@ -65,9 +80,10 @@ export function EditDrawerComponent(props) {
             size="small"
             id="outlined-basic"
             label="Title"
-            defaultValue={props.title}
+            defaultValue={props.data.title}
             onChange={handleChange}
             variant="outlined"
+            name="title"
             fullWidth={true}
           />
         </ListItem>
@@ -76,9 +92,10 @@ export function EditDrawerComponent(props) {
             size="small"
             id="outlined-basic2"
             label="Description"
-            defaultValue={props.description}
+            defaultValue={props.data.description}
             onChange={handleChange}
             variant="outlined"
+            name="description"
             fullWidth={true}
           />
         </ListItem>
