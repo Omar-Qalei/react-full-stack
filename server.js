@@ -12,7 +12,7 @@ app.use(express.json({limit: '50mb'}));
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 const environment = {
-  apiKey: "AIzaSyDwm3byAy_1Q-Cui3vFQp9yGcxLkNagjAI",
+  apiKey: "",
   authURL: "https://identitytoolkit.googleapis.com/v1/",
   databaseURL: "https://test-react-fullstack-default-rtdb.firebaseio.com/",
   storageURL: "https://firebasestorage.googleapis.com/v0/b/test-react-fullstack.appspot.com/o/"
